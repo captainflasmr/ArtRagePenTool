@@ -1,11 +1,11 @@
 
 # Table of Contents
 
-1.  [Pen Tool for ArtRage using AutoHotKey](#org31996e0)
+1.  [Pen Tool for ArtRage using AutoHotKey](#org8381567)
 
 
 
-<a id="org31996e0"></a>
+<a id="org8381567"></a>
 
 # Pen Tool for ArtRage using AutoHotKey
 
@@ -23,4 +23,4 @@ Note that the Size and Pick buttons hold down the Shift and Alt key respectively
 
 Oh and some of the shortcuts that each button initiates may be specifically ones that I have set up myself, like for example, Warp which I assign to <Ctri>w but they are easily changed in the .ahk file
 
-![img](/home/jdyer/DCIM/Art/Content/ArtRagePenTool/images/ArtRageTool--FullScreen_c.jpg)
+![img](/images/ArtRageTool--FullScreen_c.jpg)

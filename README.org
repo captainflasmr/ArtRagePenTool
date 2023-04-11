@@ -19,4 +19,4 @@ Note that the Size and Pick buttons hold down the Shift and Alt key respectively
 
 Oh and some of the shortcuts that each button initiates may be specifically ones that I have set up myself, like for example, Warp which I assign to <Ctri>w but they are easily changed in the .ahk file
 
-[[~/DCIM/Art/Content/ArtRagePenTool/images/ArtRageTool--FullScreen_c.jpg]]
+[[/images/ArtRageTool--FullScreen_c.jpg]]
