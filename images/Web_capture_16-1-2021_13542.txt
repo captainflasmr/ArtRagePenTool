@@ -1,0 +1,37 @@
+Thread Tools»  Search Threadv  Display~
+
+#11
+Join Date: May 2014
+s“"’.s':l“’:; Location:  Portsmouth UK
+entblobl, Posts: 685
+ArtRageTool Version 2 download link:
+https://1drv.ms/u/s!AtMMyTeySVIKgYdF...9dzvQ?e=QxJzdX
+Last edited by RedSaucers; 6 Days Ago at 04:17 PM,
+A # EditPost % Reply 3 Reply With Quote €3,
+#12
+Join Date: May 2014
+Reqsancens Location:  Portsmouth UK
+cavor e Posts: 685
+Hot on heels of Version 2 we now have ArtRageTool Version 3!, basically just added some more buttons and tabs!
+ArtRageTool Version 3 download link:
+https://1drv.ms/u/s!AtMMyTeySVIKgYdG...t-HIg?e=ZoN11g
+1 Minute AGo
+Join Date: May 2014
+';:d.s"':‘“';; Location:  Portsmouth UK
+or e Posts: 685
+
+ArtRage Tool Version 4!,
+https://1drv.ms/u/s!AtMMyTeySVIKgYd_...DkPyw?e=cnJOmI
+Now I have started to use this tool for painting I have tweaked the following:
+
+» A slider at the bottom of the first tab to set the opacity level on the current selected layer, so no fiddling with the little layer dial!
+« A little rearrangement of button positions so that the most common buttons I use are closer to the left hand side
+
+« Selecting the label ArtRage will now strip the tool of its windows header, but of course it will mean that you will not be able to move it, but select the label again and it
+comes back!
+
+« Added ticks to brush size slider and label showing the current pixel increment, also the maximum brush increment is now 200 pixels
+
+L o]
+= e
+
