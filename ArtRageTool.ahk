@@ -8,25 +8,28 @@ Gui, Margin, 5, 5
 Gui, Color, 333333
 Gui, Font, s8 cffffff, Verdana
 Gui, Add, Text, x5 y2 gArtPrepare, %ArtName%
-Gui, Add, Slider, x+5 w170 h15 Range50-255 vMyTransparency gMyTransparency NoTicks, 255
-Gui, Add, Button, x5 w40 h30 gArtSmaller, [
-Gui, Add, Button, x+5 w40 h30 gArtBigger, ]
-Gui, Add, Slider, x+5 w85 h20 Range1-100 vMyUpDown NoTicks, 10
-Gui, Add, Button, x+5 w40 h30 gArtMergeDown, Merg
-Gui, Add, Button, x5 w40 h30 gArtResize, Size
+Gui, Add, Slider, x+55 y+8 w90 h15 Range50-255 vMyTransparency gMyTransparency NoTicks, 255
+Gui, Add, Tab3,x5 y20, Quick|Other
+Gui, Tab, 1
+Gui, Add, Button, x9 y+5 w40 h30 gArtResize, Size
 Gui, Add, Button, x+5 w40 h30 gUndo, <
 Gui, Add, Button, x+5 w40 h30 gRedo, >
-Gui, Add, Button, x+5 w40 h30 gArtTransform, T
-Gui, Add, Button, x+5 w40 h30 gArtDeselect, Desel
-Gui, Add, Button, x5 w40 h30 gArtPick, Pick
 Gui, Add, CheckBox, x+5 w40 h30 gArtFlip, Flip
-Gui, Add, Button, x+5 w40 h30 gArtCanvasFlip, Flip
-Gui, Add, Button, x+5 w40 h30 gArtCut, Cut
-Gui, Add, Button, x+5 w40 h30 gArtPaste, Paste
-Gui, Add, Button, x5 w40 h30 gArtCanvasMove, M
+Gui, Add, Button, x9 y+5 w40 h30 gArtCanvasMove, M
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoom, Z
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoomOut, -
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoomIn, +
+Gui, Add, Button, x9 y+5 w40 h30 gArtPick, Pick
+Gui, Add, Button, x+5 w40 h30 gArtCut, Cut
+Gui, Add, Button, x+5 w40 h30 gArtPaste, Paste
+Gui, Add, Button, x+5 w40 h30 gArtTransform, T
+Gui, Tab, 2
+Gui, Add, Button, x9 y+5 w40 h30 gArtSmaller, [
+Gui, Add, Button, x+5 w40 h30 gArtBigger, ]
+Gui, Add, Slider, x+5 w85 h30 Range1-100 vMyUpDown NoTicks, 10
+Gui, Add, Button, x9 y+5 w40 h30 gArtDeselect, Desel
+Gui, Add, Button, x+5 w40 h30 gArtCanvasFlip, Flip All
+Gui, Add, Button, x9 y+5 w40 h30 gArtMergeDown, Merg Down
 Gui, Add, Button, x+5 w40 h30 gArtWarp, Warp
 Gui, Show, NoActivate x1450 y320, ArtRageTool
 return
