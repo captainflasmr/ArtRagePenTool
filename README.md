@@ -1,19 +1,21 @@
 
 # Table of Contents
 
-1.  [Pen Tool for ArtRage using AutoHotKey](#org8381567)
+1.  [Pen Tool for ArtRage using AutoHotKey and Python](#org6c45bfa)
 
 
 
-<a id="org8381567"></a>
+<a id="org6c45bfa"></a>
 
-# Pen Tool for ArtRage using AutoHotKey
+# Pen Tool for ArtRage using AutoHotKey and Python
 
 Hello there!,
 
 I generally create my art using ArtRage on a Windows laptop and have decided to create a pen tool for ArtRage as I have never been quite happy with what I have found out there.
 
 This pen tool contains all the tools I most often use and enables painting on my Windows laptop without the need for any extra accessories and just to use a stylus, so I thought I would share if anyone is interested.
+
+![img](/images/ArtRageTool--SBS_c.jpg)
 
 It uses a tool called autohotkey which is an automation scripting language for Windows, so just google autohotkey, download and install, get my autohotkey script from the link below and just double click the .ahk script to run up!
 
