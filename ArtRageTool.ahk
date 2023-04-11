@@ -1,107 +1,128 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+#InstallKeybdHook
+#InstallMouseHook
 #SingleInstance, force
-SetTitleMatchMode, RegEx
 
 ArtName = ArtRage
-CaptionToggle = 0
+CaptionToggle := 0
+CustomColor := "333333"
+ButtonWidth := 40
+ButtonHeight := 25
+Padding := 5
+FontSize := ButtonWidth / 5
+SliderWidth := ButtonWidth*4+(Padding*3)
+TransWidth := SliderWidth - (7*FontSize)
+xStart := 1450
+yStart := 320
 
-Gui, -Resize +AlwaysOnTop +E0x08000000 +ToolWindow +Border
-Gui, Margin, 5, 5
-Gui, Color, 333333
-Gui, Font, s8 cffffff, Verdana
-Gui, Add, Text, x5 y+2 gArtBorder, %ArtName%
-Gui, Add, Text, x+1 w5 gArtHidden,
-Gui, Add, Slider, x+5 w110 h15 Range50-255 vMyTransparency gMyTransparency NoTicks, 255
-Gui, Add, Tab3, x5 w180, Common|Other
-Gui, Tab, 1
-Gui, Add, Button, x5 y+5 w40 h30 gUndo, <
-Gui, Add, Button, x+5 w40 h30 gArtResize, Size
-Gui, Add, Button, x+5 w40 h30 gRedo, >
-Gui, Add, CheckBox, x5 y+5 w40 h30 gArtFlip, Flip
-Gui, Add, Button, x+5 w40 h30 gArtPick, Pick
-Gui, Add, Button, x+5 w40 h30 gArtCanvasFlip, Flip All
-Gui, Add, Button, x+5 w40 h30 gArtTransform, T
+Gui, -Resize +AlwaysOnTop +E0x08000000 +ToolWindow +Border +LastFound
+Gui, Color, %CustomColor%
+Gui, Font, s%FontSize% cffffff, Verdana
+Gui, Add, Text, x%Padding% gArtBorder, %ArtName%
+Gui Add, Progress, x+%Padding% w%TransWidth% Background%CustomColor% Range0-100 vSliderBackground,0
+Gui, Add, Button, x%Padding% y+%Padding% w%ButtonWidth% h%ButtonHeight% gArtCut, Cut
+Gui, Add, Button, x+%Padding% wp hp gArtCopy, Copy
+Gui, Add, Button, x+%Padding% wp hp gArtPaste, Paste
+Gui, Add, Button, x+%Padding% wp hp gArtDeselect, Desel
+Gui, Add, Button, x%Padding% y+%Padding% w%ButtonWidth% h%ButtonHeight% gArtPick, Pick
+Gui, Add, Button, x+%Padding% wp hp gArtTransform, T
+Gui, Add, Button, x+%Padding% wp hp gArtMergeDown, Down
+Gui, Add, Button, x+%Padding% wp hp gArtLayerDuplicate, Dup
+Gui, Add, Button, x%Padding% y+%Padding% w%ButtonWidth% h%ButtonHeight% gArtResize, Size
+Gui, Add, Button, x+%Padding% wp hp gUndo, <
+Gui, Add, Button, x+%Padding% wp hp gRedo, >
+Gui, Add, Button, x+%Padding% wp hp gArtControl, Ctrl
+Gui, Add, Slider, x%Padding% hp w%SliderWidth% Range1-100 vMyTransparent gArtLayerTransparent TickInterval25 Tooltip, 100
+Gui, Add, CheckBox, x%Padding% w%ButtonWidth% h%ButtonHeight% gArtFlip, F
+Gui, Add, CheckBox, x+%Padding% wp hp gArtLayerVisible, V
+Gui, Add, Button, x+%Padding% wp hp gArtCanvasFlip, Flip
+Gui, Add, Button, x+%Padding% wp hp gArtWarp, Warp
 Gui, Add, Button, x5 y+5 w40 h30 gArtCanvasMove, M
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoom, Z
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoomOut, -
 Gui, Add, Button, x+5 w40 h30 gArtCanvasZoomIn, +
-Gui, Add, Slider, x5 y+5 w180 h30 Range1-100 vMyTransparent gArtTest TickInterval25 Tooltip, 100
-Gui, Tab, 2
-Gui, Add, Slider, x5 y+5 w150 h30 Range1-200 vMyUpDown gArtBrushSize TickInterval25 Tooltip, 20
-Gui, Add, Text, x+2 w20 h30 vUpDownLabel, 20
-Gui, Add, Button, x5 y+5 w40 h30 gArtSmaller, [
-Gui, Add, Button, x+5 w40 h30 gArtBigger, ]
-Gui, Add, Button, x+5 w40 h30 gArtDeselect, Desel
-Gui, Add, Button, x+5 w40 h30 gArtColour, Color
-Gui, Add, Button, x5 y+5 w40 h30 gArtCut, Cut
-Gui, Add, Button, x+5 w40 h30 gArtCopy, Copy
-Gui, Add, Button, x+5 w40 h30 gArtPaste, Paste
-Gui, Add, Button, x+5 w40 h30 gArtWarp, Warp
-Gui, Show, NoActivate x1450 y320, ArtRageTool
+Gui, Show, NoActivate x%xStart% y%yStart%, ArtRageTool
+
+OnMessage(0x201, "WM_LBUTTONDOWN")
 return
+
+WM_LBUTTONDOWN(wParam, lParam, msg, hwnd)
+{
+	MouseGetPos,,,,ctrl,2
+	GuiControlGet, hwndSliderBackground, Hwnd, SliderBackground
+
+	tx := lParam & 0xFFFF
+	ty  := lParam >> 16
+	
+    if(ctrl=hwndSliderBackground) {
+		MyTransparency:=(tx*2)
+		WinSet, Transparent, %MyTransparency%, ArtRageTool
+	}
+	
+	return
+}
 
 ArtBorder:
 	WinSet, Style, ^0xC00000, ArtRageTool
 	WinGetPos,X,Y,W,H,ArtRageTool
-	If ( mod(CaptionToggle++, 2) == 0 )
+	CaptionToggle++
+	If ( mod(CaptionToggle, 2) == 0 )
 	{
-	  H-=27
-	  W-=6
+	  H-=2
+	  W-=0
     }
 	else {
-	  H-=2
-	  W-=1
+	  H-=27
+	  W-=7
 	}
 	Gui, Show, w%W% h%H%
 	return
 	
-ArtHidden:
-	WinGet, id, List, ahk_exe nomacs.exe,,
-	Loop, %id%
-	{
-    this_id := id%A_Index%
-	WinSet, Style, ^0xC40000, ahk_id %this_id%
-	Winset, Alwaysontop, , ahk_id %this_id%
-	WinHide, ahk_id %this_id%
-    WinShow, ahk_id %this_id%
-    }
-	return
-	
-Undo:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^z
-	return
-
-Redo:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^y
+MyTransparency:
+	WinSet, Transparent, %MyTransparency%, ArtRageTool
 	return
 	
 ArtResize:
 	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
 	Send {Shift Down}
 	sleep 1500
 	Send {Shift Up}
 	return
 	
+Undo:
+	WinRestore, ahk_exe %ArtName%.exe
+	SendInput, ^z
+	return
+
+Redo:
+	WinRestore, ahk_exe %ArtName%.exe
+	SendInput, ^y
+	return
+	
+ArtControl:
+	WinRestore, ahk_exe %ArtName%.exe
+	Send {Control Down}
+	sleep 1500
+	Send {Control Up}
+	return
+	
+ArtPick:
+	WinRestore, ahk_exe %ArtName%.exe
+	Send {LAlt Down}
+	sleep 1500
+	Send {LAlt Up}
+	return
+	
 ArtFlip:
 	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
 	GetKeyState, state, h
 	if state = D
 		Send {h up}
 	else
 		Send {h down}
-	return
-	
-ArtPick:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send {LAlt Down}
-	sleep 1500
-	Send {LAlt Up}
 	return
 	
 ArtTransform:
@@ -110,10 +131,57 @@ ArtTransform:
 	Send ^!+t
 	return
 	
-ArtWarp:
+ArtMergeDown:
+	WinRestore, ahk_exe %ArtName%.exe
+	Send ^!{Down}
+	return
+	
+ArtLayerDuplicate:
+	WinRestore, ahk_exe %ArtName%.exe
+	Send ^!d
+	return
+	
+ArtDeselect:
 	WinRestore, ahk_exe %ArtName%.exe
 	WinActivate, ahk_exe %ArtName%.exe
-	Send ^w
+	Send ^d
+	return
+	
+ArtLayerVisible:
+	WinRestore, ahk_exe %ArtName%.exe
+	Send ^+v
+	return
+	
+ArtLayerTransparent:
+	WinRestore, ahk_exe %ArtName%.exe
+	WinActivate, ahk_exe %ArtName%.exe
+	Send ^o
+	WinRestore, ahk_class ToolWindow
+	Send %MyTransparent%, {Enter}
+	return
+	
+ArtCut:
+	WinRestore, ahk_exe %ArtName%.exe
+	WinActivate, ahk_exe %ArtName%.exe
+	Send ^x
+	return
+	
+ArtCopy:
+	WinRestore, ahk_exe %ArtName%.exe
+	WinActivate, ahk_exe %ArtName%.exe
+	Send ^c
+	return
+	
+ArtPaste:
+	WinRestore, ahk_exe %ArtName%.exe
+	WinActivate, ahk_exe %ArtName%.exe
+	Send ^v
+	return
+	
+ArtColour:
+	WinRestore, ahk_exe %ArtName%.exe
+	WinActivate, ahk_exe %ArtName%.exe
+	Send ^j
 	return
 	
 ArtCanvasFlip:
@@ -124,40 +192,14 @@ ArtCanvasFlip:
 	Send,{Enter}
 	return
 	
-ArtBrushSize:
-	Gui, Submit, NoHide
-	GuiControl,,UpDownLabel,%MyUpDown%
-	return
-	
-ArtSmaller:
+ArtWarp:
 	WinRestore, ahk_exe %ArtName%.exe
 	WinActivate, ahk_exe %ArtName%.exe
-	Gui, Submit, NoHide
-	Send {[ %MyUpDown%}
-	return
-	
-ArtBigger:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Gui, Submit, NoHide
-	Send {] %MyUpDown%}
-	return
-	
-ArtDeselect:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^d
-	return
-	
-ArtClearLayer:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^+c
+	Send, ^w
 	return
 	
 ArtCanvasMove:
 	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
 	Send {Space Down}
 	sleep 1500
 	Send {Space Up}
@@ -165,7 +207,6 @@ ArtCanvasMove:
 	
 ArtCanvasZoom:
 	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
 	Send {Space Down}
 	Send {Shift Down}
 	sleep 1500
@@ -184,51 +225,3 @@ ArtCanvasZoomIn:
 	WinActivate, ahk_exe %ArtName%.exe
 	Send ^+=
 	return
-	
-ArtCut:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^x
-	return
-	
-ArtPaste:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^v
-	return
-	
-ArtCopy:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^c
-	return
-	
-MyTransparency:
-	Gui, Submit, NoHide
-	WinSet, Transparent, %MyTransparency%, ArtRageTool
-	return
-	
-ArtMergeDown:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^!{Down}
-	return
-	
-ArtColour:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^j
-	return
-	
-ArtTest:
-	WinRestore, ahk_exe %ArtName%.exe
-	WinActivate, ahk_exe %ArtName%.exe
-	Send ^o
-	WinRestore, ahk_class ToolWindow
-	Gui, Submit, NoHide
-	Send %MyTransparent%, {Enter}
-	return
-
-	
-
-
